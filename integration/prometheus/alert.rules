@@ -1,0 +1,8 @@
+groups:
+- name: prometheus.rules
+  rules:
+  - alert: InstanceDown
+    expr: up == 0
+    for: 5m
+    labels:
+      severity: page
