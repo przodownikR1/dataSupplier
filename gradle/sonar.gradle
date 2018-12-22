@@ -1,0 +1,27 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+}
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "dataSupplier"
+        property "sonar.projectKey", "dataSupplier"
+        property "sonar.host.url","http:9000"
+        property "sonar.exclusions",[
+            "**/*DTO.java",
+            "**/*Type.java",
+            "**/*Config.java",
+            "**/*Setting.java",
+            "**/*Application.java",
+            "**/dto/**",
+            "**/config/**",
+            "**/Profiles.java",
+            "**/*Information.java",
+            "**/EventStreams.java"
+        ]
+    }
+}

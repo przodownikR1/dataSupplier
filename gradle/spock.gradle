@@ -1,0 +1,16 @@
+apply plugin: 'groovy'
+
+sourceSets {
+    generated.java.srcDirs=['src/main/generated']
+    main {
+        java { srcDir 'src/main/java' }
+        groovy { srcDir 'src/main/groovy' }
+        resources { srcDir 'src/main/resources' }
+    }
+    test {
+        java { srcDir 'src/test/java' }
+        groovy { srcDir 'src/test/groovy' }
+        groovy { srcDir 'src/integrationTest/groovy' }
+        resources { srcDir 'src/test/resources' }
+    }
+}

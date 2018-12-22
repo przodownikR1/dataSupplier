@@ -1,0 +1,71 @@
+apply plugin: 'org.springframework.boot'
+apply plugin: "com.gorylenko.gradle-git-properties"
+
+springBoot {
+    buildInfo {
+        // Generate extra build info.
+        properties {
+            additional = [
+                by: System.properties['user.name'],
+                operatingSystem: "${System.properties['os.name']} (${System.properties['os.version']})",
+                machine: InetAddress.localHost.hostName,
+                time: buildTime(),
+                'springBootVersion': "${springBootVersion}",
+                'project.rootDir': "${project.rootDir}",
+                'project.buildDir': "${project.buildDir}"
+            ]
+        }
+    }
+}
+
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
+def buildTime() {
+    final dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ")
+    dateFormat.timeZone = TimeZone.getTimeZone('GMT')
+    dateFormat.format(new Date())
+}
+gitProperties {
+    dateFormat = "yyyy-MM-dd'T'HH:mmZ"
+    dateFormatTimeZone = "EET"
+
+}
+
+bootRun {
+    systemProperty 'management.info.git.mode', 'FULL'
+    if (System.properties.containsKey('SPRING_PROFILES_ACTIVE')) {
+        systemProperty "spring.profiles.active", System.properties['SPRING_PROFILES_ACTIVE']
+    }
+
+    def debugMode = []
+    if (project.hasProperty('debugPort')) {
+        debugMode = [
+            '-Xdebug',
+            '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=' + project.getProperty('debugPort')
+        ]
+    }
+
+    def stdOpts = [
+        '-Dfile.encoding=UTF8',
+        '-Xms128m',
+        '-Xmx256m',
+        '-XX:+UseG1GC'
+    ]
+    def gcOpts = [
+        '-verbose:gc',
+        '-XX:+PrintGCDetails',
+        '-XX:+PrintHeapAtGC',
+        '-XX:+PrintGCDateStamps',
+        '-XX:+PrintTenuringDistribution',
+        '-XX:+PrintClassHistogram',
+        '-Xloggc:gc.log'
+    ]
+
+    jvmArgs = stdOpts + gcOpts + debugMode
+
+    if (project.hasProperty('jvmArgs')) {
+        jvmArgs project.jvmArgs.split('\\s+')
+    }
+
+}

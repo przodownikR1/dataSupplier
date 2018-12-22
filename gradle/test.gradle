@@ -1,0 +1,17 @@
+test {
+    logging.captureStandardOutput(LogLevel.INFO)
+    logging.captureStandardOutput(LogLevel.ERROR)
+    exclude '**/*ITSpec.*'
+    minHeapSize = '128m'
+    maxHeapSize = "2048m"
+    failFast = false
+    testLogging {
+        showCauses true
+        showExceptions true
+        showStackTraces true
+        showStandardStreams = true
+        events 'started', 'passed', 'skipped', 'failed'
+    }
+    forkEvery = 10
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+}

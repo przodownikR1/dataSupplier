@@ -3,17 +3,27 @@ buildscript {
 		springBootVersion = '2.1.1.RELEASE'
 	}
 	repositories {
+        maven { url "https://plugins.gradle.org/m2/"}
 		mavenCentral()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:${gradleGitPropertiesVersion}"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubeGradleVersion}"
+        classpath "se.transmode.gradle:gradle-docker:${dockerPluginVersion}"
+        classpath "com.adarshr:gradle-test-logger-plugin:${gradleTestLoggerVersion}"
+        
 	}
 }
 
-apply plugin: 'groovy'
-apply plugin: 'eclipse'
+apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply from: 'gradle/test.gradle'
+apply from: 'gradle/spock.gradle'
+apply from: 'gradle/boot.gradle'
+apply from: 'gradle/sonar.gradle'
+apply plugin: "com.adarshr.test-logger"
 
 group = 'pl.java.scalatech'
 version = '0.0.1-SNAPSHOT'
@@ -27,19 +37,56 @@ repositories {
 ext['springCloudVersion'] = 'Greenwich.RC2'
 
 dependencies {
+    compileOnly('org.projectlombok:lombok:1.18.4')
+    annotationProcessor "org.projectlombok:lombok:1.18.4"
 	implementation('org.springframework.boot:spring-boot-starter-actuator')
 	implementation('org.springframework.boot:spring-boot-starter-amqp')
 	implementation('org.springframework.boot:spring-boot-starter-webflux')
+    implementation( 'io.micrometer:micrometer-registry-jmx:latest.release')
+    implementation( "io.micrometer:micrometer-registry-prometheus")
 	implementation('org.springframework.cloud:spring-cloud-stream-binder-rabbit')
 	implementation('org.springframework.cloud:spring-cloud-stream-reactive')
-	implementation('org.codehaus.groovy:groovy')
+    implementation group: 'com.github.javafaker', name: 'javafaker', version: '0.16'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+    
+    //SPOCK TESTING
+    testImplementation "org.spockframework:spock-core:${spockCoreVersion}"
+    testImplementation "org.spockframework:spock-spring:${spockSpringVersion}"
+    testImplementation( "com.athaydes:spock-reports:${spockReportsVersion}" ) { transitive = false // this avoids affecting your version of Groovy/Spock
+    }
+    testImplementation "net.bytebuddy:byte-buddy:${byteBuddyVersion}"
+    testImplementation "org.objenesis:objenesis:${objenesisVersion}"
+    testImplementation "org.mutabilitydetector:MutabilityDetector:${mutabilityDetectorVersion}"
 	testImplementation('io.projectreactor:reactor-test')
 	testImplementation('org.springframework.cloud:spring-cloud-stream-test-support')
+    
 }
 
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
+}
+configurations {
+    all*.exclude module: "jcl-over-slf4j"
+    all*.exclude module: "log4j-over-slf4j"
+    all*.exclude module: "slf4j-jdk14"
+    all*.exclude module: "slf4j-log4j12"
+}
+
+tasks.withType(JavaCompile) {
+    options.fork = true
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:deprecation' << '-Xlint:unchecked'
+}
+
+testlogger {
+    theme 'standard-parallel'
+    showSummary true
+    slowThreshold 20
+    showPassed true
+    showSkipped true
+    showFailed true
+    showSkippedStandardStreams true
+    showFailedStandardStreams true
 }
