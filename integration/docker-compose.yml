@@ -30,6 +30,19 @@ services:
     network_mode: host
   grafana:
     image: grafana/grafana
+    container_name: grafana
+    hostname: grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: "admin"
+      GF_SECURITY_ADMIN_PASSWORD: "admin"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    restart: unless-stopped
+    volumes:
+      #- grafana_data:/var/lib/grafana:rw
+      - ./grafana/datasources:/etc/grafana/datasources
+      - ./grafana/dashboards:/etc/grafana/dashboards
+      - ./grafana/setup.sh:/setup.sh
+    #  entrypoint: /setup.sh
     ports:
     - 80:3000
     depends_on:
@@ -53,17 +66,28 @@ services:
     - /var/lib/docker:/var/lib/docker:ro
     ports:
     - 9008:8080
-    
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
      - "15672:15672"
      - "5672:5672"
+     - "9419:9419"
     environment:
      - RABBITMQ_DEFAULT_USER=test
      - RABBITMQ_DEFAULT_PASS=password
-
+  rabbitmq-exporter:
+    image: kbudde/rabbitmq-exporter
+    ports:
+      - 9999:9419
+    environment:
+      PUBLISH_PORT: 9419
+      RABBIT_CAPABILITIES: bert,no_sort
+      RABBIT_USER: test
+      RABBIT_PASSWORD: password
+      RABBIT_URL: http://rabbitmq:15672
+    links:
+      - rabbitmq
 networks:
   sample:
     driver: bridge
