@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.0'
 services:
   exporter:
     image: prom/node-exporter:latest
@@ -21,28 +21,29 @@ services:
     ports:
     - 9090:9090
     volumes:
-    - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    - ./prometheus/alert.rules:/etc/prometheus/alert.rules
+    - "${PROMETHEUS_DATA_DIR:-prometheus}:/prometheus"
+    - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+    - "./prometheus/alert.rules:/etc/prometheus/alert.rules"
     depends_on:
     - exporter
     - cadvisor
     - alertmanager
     network_mode: host
   grafana:
-    image: grafana/grafana
-    container_name: grafana
-    hostname: grafana
+    image: "grafana/grafana:5.3.2"
+    container_name: dashboards_grafana
+    hostname: dashboards_grafana
     environment:
       GF_SECURITY_ADMIN_USER: "admin"
       GF_SECURITY_ADMIN_PASSWORD: "admin"
       GF_USERS_ALLOW_SIGN_UP: "false"
+      #GF_AUTH_ANONYMOUS_ENABLED: "true"
     restart: unless-stopped
     volumes:
-      #- grafana_data:/var/lib/grafana:rw
-      - ./grafana/datasources:/etc/grafana/datasources
-      - ./grafana/dashboards:/etc/grafana/dashboards
-      - ./grafana/setup.sh:/setup.sh
-    #  entrypoint: /setup.sh
+     # - "${GRAFANA_DATA_DIR:-grafana}:/var/lib/grafana"
+      - "./grafana/prometheus-datasource.yaml:/etc/grafana/provisioning/datasources/prometheus-datasource.yaml"
+     # - "./grafana/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml"
+     # - "./grafana/dashboards:/var/lib/grafana/dashboards:ro"
     ports:
     - 80:3000
     depends_on:
@@ -91,3 +92,6 @@ services:
 networks:
   sample:
     driver: bridge
+volumes:
+  grafana:
+  prometheus:

@@ -1,7 +1,7 @@
 {
  "__inputs": [
     {
-      "name": "prometheus",
+      "name": "DS_PROMETHEUS",
       "label": "Prometheus",
       "description": "",
       "type": "datasource",
@@ -59,7 +59,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(245, 54, 54, 0.9)"
           ],
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -194,7 +194,7 @@
           },
           "aliasColors": {},
           "bars": true,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "fill": 1,
           "id": 12,
@@ -276,7 +276,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "fill": 1,
           "id": 6,
@@ -350,7 +350,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "fill": 1,
           "id": 4,
@@ -424,7 +424,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "fill": 1,
           "id": 3,
@@ -498,7 +498,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "fill": 1,
           "id": 5,
@@ -571,7 +571,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "fill": 1,
           "id": 7,
           "legend": {
@@ -644,7 +644,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "fill": 1,
           "id": 8,
@@ -742,7 +742,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "fill": 1,
           "id": 2,
@@ -817,7 +817,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "fill": 1,
           "id": 9,
           "legend": {
@@ -898,7 +898,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "fill": 1,
           "id": 10,
           "legend": {
@@ -979,7 +979,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "prometheus",
+          "datasource": "${DS_PROMETHEUS}",
           "fill": 1,
           "id": 11,
           "legend": {

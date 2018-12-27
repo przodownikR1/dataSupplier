@@ -1,7 +1,7 @@
 {
  "__inputs": [
     {
-      "name": "prometheus",
+      "name": "DS_PROMETHEUS",
       "label": "Prometheus",
       "description": "",
       "type": "datasource",
