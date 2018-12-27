@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
-import pl.java.scalatech.dataSupplier.domain.Person;
+import pl.java.scalatech.dataSupplier.domain.Card;
 
 public final class CreatedEvent implements Event {
 
@@ -44,12 +44,12 @@ public final class CreatedEvent implements Event {
         private static final long serialVersionUID = 5287312120524301221L;
 
         @JsonCreator
-        public Payload(@JsonProperty("Person") Person person) {
-            this.person = person;
+        public Payload(@JsonProperty("Card") Card card) {
+            this.card = card;
         }
 
         @NotBlank
-        private final Person person;
+        private final Card card;
 
     }
 }

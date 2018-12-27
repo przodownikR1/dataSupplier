@@ -17,3 +17,15 @@ scrape_configs:
   static_configs:
   - targets:
     - localhost:9008
+- job_name: dataSupplier
+  scrape_interval: 5s
+  metrics_path: /ops/prometheus
+  static_configs:
+  - targets:
+    - localhost:8082
+- job_name: dataConsumer
+  scrape_interval: 5s
+  metrics_path: /ops/prometheus
+  static_configs:
+  - targets:
+    - localhost:8084
