@@ -7,12 +7,6 @@ scrape_configs:
   scrape_interval: 5s
   static_configs:
   - targets:
-    - localhost:9090
-- job_name: ln-bik-mc
-  scrape_interval: 5s
-  metrics_path: /ops/prometheus
-  static_configs:
-  - targets:
     - localhost:8082
 - job_name: node-exporter
   static_configs:
