@@ -26,3 +26,4 @@
 /.nb-gradle/.gradletasknamecache
 bin
 gc.log
+integration/.data/

@@ -89,6 +89,14 @@ services:
       RABBIT_URL: http://rabbitmq:15672
     links:
       - rabbitmq
+  portainer:
+    image: portainer/portainer
+    ports:
+      - "9500:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/portainer:/data portainer/portainer
+      - ./.data/portainer:/data
 networks:
   sample:
     driver: bridge
