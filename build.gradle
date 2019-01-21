@@ -46,7 +46,7 @@ dependencies {
     implementation group: 'com.github.javafaker', name: 'javafaker', version: '0.16'
     //Map-struct
     implementation 'org.mapstruct:mapstruct:1.2.0.Final'
-    //apt('org.mapstruct:mapstruct-processor:1.2.0.Final')
+    compileOnly('org.mapstruct:mapstruct-processor:1.2.0.Final')
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.2.0.Final'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
